@@ -2,7 +2,7 @@ from crispector.utils.constants_and_types import SITE_NAME, IndelType, Path, FRE
     MOCK_READ_NUM, TX_EDIT, EDIT_PERCENT, CI_LOW, CI_HIGH, READ_LEN_SIDE, ALIGN_CUT_SITE, ALIGNMENT_W_INS, \
     ALIGNMENT_W_DEL, POS_IDX_E, POS_IDX_S, INDEL_TYPE, ExpType, ON_TARGET, IsEdit, C_TX, C_MOCK, \
     SUMMARY_RESULTS_TITLES, OFF_TARGET_COLOR, ON_TARGET_COLOR, OUTPUT_DIR, DISCARDED_SITES, \
-    EDITING_ACTIVITY, PLOT_PATH, TITLE, W, H, PDF_PATH, PAGE_TITLE, READING_STATS, MAPPING_STATS, MAPPING_PER_SITE, \
+    EDITING_ACTIVITY,EDITING_ACTIVITY_PER_ALLELE, PLOT_PATH, TITLE, W, H, PDF_PATH, PAGE_TITLE, READING_STATS, MAPPING_STATS, MAPPING_PER_SITE, \
     FASTP_DIR, FASTP_TX_PATH, FASTP_MOCK_PATH, RESULT_TABLE, TAB_DATA, HTML_SITES, LOG_PATH, TransDf, AlgResultDf, \
     TransResultDf, TRANS_FDR, SITE_A, SITE_B, TX_TRANS_READ, TRANSLOCATIONS, TX_TRANS_PATH, MOCK_TRANS_PATH, \
     TRANS_RES_TAB, TRANS_HEATMAP_TAB, TRANS_RESULTS_TITLES, EDIT_SECTION, MOD_SECTION, CLS_RES_SECTION, CLS_RES_INS, \
@@ -115,6 +115,9 @@ def create_experiment_output(result_df: AlgResultDf, tx_trans_df: TransDf, mock_
     html_d[EDIT_SECTION][TITLE] = "Editing Activity"
     plot_editing_activity(result_df, confidence_interval, editing_threshold, html_d, output)
 
+    #Create bar plot for editing activity per allele
+    plot_editing_activity_per_allele(result_df, confidence_interval, editing_threshold, html_d, output)
+
     # Dump reads statistics
     tx_input_n, tx_merged_n, tx_aligned_n = input_processing.read_numbers(ExpType.TX)
     mock_input_n, mock_merged_n, mock_aligned_n = input_processing.read_numbers(ExpType.MOCK)
@@ -195,6 +198,8 @@ def create_experiment_output(result_df: AlgResultDf, tx_trans_df: TransDf, mock_
     package_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'html_templates/crispector_logo.jpg')
     shutil.copy2(package_path, user_path)
     html_d[LOGO_PATH] = os.path.join(OUTPUT_DIR, "crispector_logo.jpg")
+
+
 
     return html_d
 
@@ -889,6 +894,139 @@ def plot_editing_activity(result_df: AlgResultDf, confidence_interval: float, ed
 
     plt.close(fig)
 
+def plot_editing_activity_per_allele(result_df: AlgResultDf, confidence_interval: float, editing_threshold: float, html_d: Dict,
+                          output: Path):
+
+    # Set font
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    mpl.rcParams['font.size'] = 9
+    mpl.rcParams['xtick.labelsize'] = 9
+    mpl.rcParams['ytick.labelsize'] = 9
+    mpl.rcParams['axes.labelsize'] = 11
+    mpl.rcParams['axes.titlesize'] = 11
+    mpl.rcParams['legend.fontsize'] = 11
+    editing_bar_text_size = 8
+    dpi = 300
+    title = ""
+
+    # Filter all low editing activity sites
+    edit_df = result_df.dropna()
+    edit_df = edit_df.loc[edit_df[CI_HIGH] >= editing_threshold]
+
+    # Sort experiments
+    edit_df = edit_df.sort_values(by=EDIT_PERCENT, ascending=False)
+
+    # Create axes
+    max_bars = 20
+    bar_num = edit_df.shape[0]
+    plot_num = math.ceil(bar_num / max_bars)
+    # set dynamic bar_width - according to the number of bars
+    fig_w = 4 + 4 * (min(bar_num, max_bars) / 20)
+    fig_h = plot_num * 3
+    bar_width = 0.9
+    fig, axes = plt.subplots(nrows=plot_num, ncols=1, figsize=(fig_w, fig_h), tight_layout=True)
+
+    # Create bars and bar names
+    editing = edit_df[EDIT_PERCENT].values
+    site_names = edit_df[SITE_NAME].values
+    CI_high = edit_df[CI_HIGH].values - editing
+    CI_low = editing - edit_df[CI_LOW].values
+    on_target = edit_df[ON_TARGET].values
+
+    # Create bar plot
+    for idx in range(plot_num):
+        if plot_num == 1:
+            axes = [axes]
+
+        plt_editing = editing[max_bars * idx:min(max_bars * (idx + 1), len(editing))]
+        plt_site_names = site_names[max_bars * idx:min(max_bars * (idx + 1), len(site_names))]
+        plt_CI_high = CI_high[max_bars * idx:min(max_bars * (idx + 1), len(CI_high))]
+        plt_CI_low = CI_low[max_bars * idx:min(max_bars * (idx + 1), len(CI_low))]
+        plt_on_target = on_target[max_bars * idx:min(max_bars * (idx + 1), len(on_target))]
+
+        # The X position of bars
+        number_of_bars = len(plt_editing)
+        bar_pos = list(range(1, number_of_bars + 1))
+
+        # Bar plot
+        capsize = 2
+        bar_plot = axes[idx].bar(bar_pos, plt_editing, width=bar_width, color=OFF_TARGET_COLOR,
+                                 yerr=[plt_CI_low, plt_CI_high], align='center', ecolor='black',
+                                 capsize=capsize, error_kw={"elinewidth": 0.75})
+        for site_idx, is_site_on_target in enumerate(plt_on_target):
+            if is_site_on_target:
+                bar_plot[site_idx].set_color(ON_TARGET_COLOR)
+
+        # Add horizontal line
+        axes[idx].axhline(y=editing_threshold, linewidth=1, color='k', linestyle="--", alpha=0.5)
+
+        # Set labels
+        axes[idx].set_xlabel("Site Name")
+        axes[idx].set_ylabel("Editing Activity (%)")
+
+        # Set scale and lim
+        y_lim = 1e-2
+        axes[idx].set_ylim(1e-2, 100)
+        axes[idx].set_yscale('log')
+        if plot_num > 1:
+            axes[idx].set_xlim(0, max_bars + 1)
+        else:
+            axes[idx].set_xlim(0, min(number_of_bars + 3, max_bars + 1))
+
+        # Text below each bar plot + y ticks
+        axes[idx].set_xticks([r + 1 for r in range(number_of_bars)])
+        axes[idx].set_xticklabels(plt_site_names, rotation='vertical')
+
+        def format_func(value, tick_number):
+            if value == 0.001:
+                return "0.001"
+            elif value == 0.01:
+                return "0.01"
+            elif value == 0.1:
+                return "0.1"
+            elif value == 1.0:
+                return "1"
+            elif value == 10.0:
+                return "10"
+            elif value == 100.0:
+                return "100"
+            elif value == 1000.0:
+                return "1000"
+
+        axes[idx].yaxis.set_major_formatter(plt.FuncFormatter(format_func))
+        axes[idx].spines['top'].set_visible(False)
+        axes[idx].spines['right'].set_visible(False)
+
+        # Text on the top of each bar plot
+        text_height = 1.1 * (plt_editing + plt_CI_high)
+        for text_idx in range(number_of_bars):
+            axes[idx].text(x=bar_pos[text_idx], y=text_height[text_idx],
+                           s="{:.2f}".format(plt_editing[text_idx]), ha='center', va='bottom',
+                           size=editing_bar_text_size)
+
+        # change title here!!
+        if idx == 0:
+            title="Editing Activity per allele"
+            # title = "Editing Activity with {} % CI above {}%".format(100 * confidence_interval, editing_threshold)
+            # axes[idx].set_title(title, weight='bold', family='serif')
+
+            # Add legend
+            axes[idx].bar([0], [y_lim], color=ON_TARGET_COLOR, label="On-Target")
+            axes[idx].bar([0], [y_lim], color=OFF_TARGET_COLOR, label="Off-Target")
+            axes[idx].legend(loc='upper right')
+
+    if edit_df.shape[0] > 0:
+        fig.savefig(os.path.join(output, 'editing_activity.png'), box_inches='tight', dpi=dpi)
+        fig.savefig(os.path.join(output, 'editing_activity.svg'), pad_inches = 1, box_inches='tight')
+
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE] = dict()
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PLOT_PATH] = os.path.join(OUTPUT_DIR, 'editing_activity.png')
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PDF_PATH] = os.path.join(OUTPUT_DIR, 'editing_activity.svg')
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][TITLE] = title
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][W] = "{}%".format(min(95, int(50 + 45 * (bar_num / 20))))
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][H] = dpi*fig_h
+
+    plt.close(fig)
 
 def create_reads_statistics_report(result_df: AlgResultDf, tx_in: int, tx_merged: int, tx_aligned: int,
                                    mock_in: int, mock_merged: int, mock_aligned: int, html_d: Dict, output: Path):
