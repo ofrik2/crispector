@@ -1016,12 +1016,12 @@ def plot_editing_activity_per_allele(result_df: AlgResultDf, confidence_interval
             axes[idx].legend(loc='upper right')
 
     if edit_df.shape[0] > 0:
-        fig.savefig(os.path.join(output, 'editing_activity.png'), box_inches='tight', dpi=dpi)
-        fig.savefig(os.path.join(output, 'editing_activity.svg'), pad_inches = 1, box_inches='tight')
+        fig.savefig(os.path.join(output, 'editing_act_allele.png'), box_inches='tight', dpi=dpi)
+        fig.savefig(os.path.join(output, 'editing_act_allele.svg'), pad_inches = 1, box_inches='tight')
 
     html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE] = dict()
-    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PLOT_PATH] = os.path.join(OUTPUT_DIR, 'editing_activity.png')
-    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PDF_PATH] = os.path.join(OUTPUT_DIR, 'editing_activity.svg')
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PLOT_PATH] = os.path.join(OUTPUT_DIR, 'editing_act_allele.png')
+    html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][PDF_PATH] = os.path.join(OUTPUT_DIR, 'editing_act_allele.svg')
     html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][TITLE] = title
     html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][W] = "{}%".format(min(95, int(50 + 45 * (bar_num / 20))))
     html_d[EDIT_SECTION][EDITING_ACTIVITY_PER_ALLELE][H] = dpi*fig_h

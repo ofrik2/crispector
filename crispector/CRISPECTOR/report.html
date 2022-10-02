@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Crispector Report</title>
+
+  <!--Bootstrap CSS library-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+
+  <!--jQuery library-->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+    crossorigin="anonymous"></script>
+
+  <!--JS library-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+    crossorigin="anonymous"></script>
+
+  <!--Latest compiled JavaScript library-->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+    crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+  </style>
+
+    
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#edit_section">
+		Editing Activity
+</a>
+          </li>
+          
+	
+	<br>
+	<li class="nav-item">
+		<a class="nav-link" href="#translocations">Translocations</a>
+	 </li>
+		
+
+          <li class="nav-item">
+            <a class="nav-link" href="#Reading_Statistics">
+		Reading Statistics
+</a>
+          </li>
+          <li class="nav-item">
+            <li class="dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#Target Sites">Target Sites<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                
+	<li><a href="#EMX1_1">EMX1_1</a></li>
+	<li><a href="#EMX1_10">EMX1_10</a></li>
+	<li><a href="#EMX1_2">EMX1_2</a></li>
+	<li><a href="#EMX1_3">EMX1_3</a></li>
+	<li><a href="#EMX1_4">EMX1_4</a></li>
+	<li><a href="#EMX1_5">EMX1_5</a></li>
+	<li><a href="#EMX1_6">EMX1_6</a></li>
+	<li><a href="#EMX1_7">EMX1_7</a></li>
+	<li><a href="#EMX1_8">EMX1_8</a></li>
+	<li><a href="#EMX1_9">EMX1_9</a></li>
+	
+           
+              </ul>
+            </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#Crispector_Main_Log">Crispector Main Log</a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12 text-center">
+        <img src="
+		crispector_output/crispector_logo.jpg
+" width="50%">
+        <div class="hr-divider">
+          <h5 class="hr-divider-content hr-divider-heading">
+            Accurate analysis of off-target editing activity from comparative NGS data
+          </h5>
+        </div>
+      </div>
+    </div>
+      
+  <ul class="list-group list-group-flush">
+    
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="card text-center">
+            <li class="list-group-item">
+              <div id="edit_section" class="card-header">
+                <h5 style="text-align:center">
+		Editing Activity
+</h5>
+              </div>
+              <div class="card-body">
+                <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="edit_section_editing_activity_tab" data-toggle="tab" href="#edit_section_editing_activity" role="tab" aria-controls="" aria-selected="true">
+		Editing Activity with 95.0 % CI above 0.1%
+</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="edit_section_result_table_tab" data-toggle="tab" href="#edit_section_result_table" role="tab" aria-controls="mapping_per_site" aria-selected="false">
+		Results Table
+</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="edit_section_per_allele_tab" data-toggle="tab" href="#edit_section_editing_activity_per_allele" role="tab" aria-controls="mapping_per_site" aria-selected="false">
+	Editing Activity per allele
+</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="edit_section">
+                  <div class="tab-pane fade show active" id="edit_section_editing_activity" role="tabpanel" aria-labelledby="mapping_stats-tab">
+                    <a href="
+		crispector_output/editing_activity.svg
+"><img src="
+		crispector_output/editing_activity.png
+" width=68%></a>
+                  </div>
+                  <div class="tab-pane fade show active" id="edit_section_editing_activity_per_allele" role="tabpanel" aria-labelledby="mapping_stats-tab">
+                    <a href="
+		crispector_output/editing_act_allele.svg
+"><img src="
+		crispector_output/editing_act_allele.png
+" width=68%></a>
+                  </div>
+                  <div class="tab-pane fade" id="edit_section_result_table" role="tabpanel" aria-labelledby="edit_section_result_table">
+                    <table class="table table-hover">
+                      
+		<table border="0" class="dataframe table table-hover">
+  <thead>
+    <tr style="text-align: center;">
+      <th></th>
+      <th>Site Name</th>
+      <th>On Target</th>
+      <th>Mock number of reads</th>
+      <th>Treatment number of reads</th>
+      <th>Edited reads</th>
+      <th>Editing Activity</th>
+      <th>CI_low</th>
+      <th>CI_high</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th></th>
+      <td>EMX1_1</td>
+      <td>True</td>
+      <td>10616</td>
+      <td>8527</td>
+      <td>8220</td>
+      <td>96.399672</td>
+      <td>96.004251</td>
+      <td>96.795092</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_10</td>
+      <td>False</td>
+      <td>7837</td>
+      <td>7762</td>
+      <td>77</td>
+      <td>0.992012</td>
+      <td>0.77154</td>
+      <td>1.212485</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_2</td>
+      <td>False</td>
+      <td>9536</td>
+      <td>8402</td>
+      <td>4827</td>
+      <td>57.450607</td>
+      <td>56.393423</td>
+      <td>58.507791</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_3</td>
+      <td>False</td>
+      <td>1789</td>
+      <td>2888</td>
+      <td>1967</td>
+      <td>68.109418</td>
+      <td>66.409671</td>
+      <td>69.809165</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_4</td>
+      <td>False</td>
+      <td>1769</td>
+      <td>2086</td>
+      <td>16</td>
+      <td>0.767018</td>
+      <td>0.39263</td>
+      <td>1.141406</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_5</td>
+      <td>False</td>
+      <td>601</td>
+      <td>1341</td>
+      <td>24</td>
+      <td>1.789709</td>
+      <td>1.080126</td>
+      <td>2.499293</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_6</td>
+      <td>False</td>
+      <td>6572</td>
+      <td>5729</td>
+      <td>470</td>
+      <td>8.203875</td>
+      <td>7.493267</td>
+      <td>8.914483</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_7</td>
+      <td>False</td>
+      <td>2427</td>
+      <td>2526</td>
+      <td>16</td>
+      <td>0.633413</td>
+      <td>0.324031</td>
+      <td>0.942794</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_8</td>
+      <td>False</td>
+      <td>6700</td>
+      <td>7262</td>
+      <td>3</td>
+      <td>0.041311</td>
+      <td>0.0</td>
+      <td>0.088048</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_9</td>
+      <td>False</td>
+      <td>1311</td>
+      <td>2294</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+
+                    </table>
+                    <br></br>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      
+	
+	<div>
+		<br></br>
+	</div>
+	<div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="card text-center">
+			<li class="list-group-item">
+				<div id="translocations" class="card-header">
+					<h5 style="text-align:center">Translocations</h5>
+				</div>
+				<div class="card-body">
+			
+		
+
+			
+				<ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+					<li class="nav-item">
+				  	<a class="nav-link active" id="heatmap_tab" data-toggle="tab" href="#heatmap" role="tab" aria-controls="" aria-selected="true">Translocation Reads Heatmap for FDR < 5.00e-02</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="mapping_stats-tab" data-toggle="tab" href="#result_table" role="tab" aria-controls="" aria-selected="true">Translocations Results Sorted by FDR Value</a>
+						</li>
+				</ul>
+			
+
+			
+
+			
+
+			
+
+				<div class="tab-content" id="myTabContent">
+			
+
+			
+
+				
+					<div class="tab-pane fade show active" id="heatmap" role="tabpanel" aria-labelledby="mapping_stats-tab">
+				  		<a href="crispector_output/translocations_heatmap.svg"><img src="crispector_output/translocations_heatmap.png" width="53%" ></a>
+						  <table style="width:100%">
+							<tr>
+							<th>
+								
+									<form method="get" action="crispector_output/tx_reads_with_primer_inconsistency.csv">
+										<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment reads with primer inconsistency</button>
+									</form>
+								
+							</th>
+							<th>
+								
+									<form method="get" action="crispector_output/mock_reads_with_primer_inconsistency.csv">
+										<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Mock reads with primer inconsistency</button>
+									</form>
+								
+							</th>
+							</tr>
+						</table>
+						<p>
+							<br>
+						</p>
+						
+					</div>
+
+					<div class="tab-pane fade show" id="result_table" role="tabpanel" aria-labelledby="">
+						<table class="table table-hover">
+							  <table border="0" class="dataframe table table-hover">
+  <thead>
+    <tr style="text-align: center;">
+      <th></th>
+      <th>site A</th>
+      <th>site B</th>
+      <th>treatment reads</th>
+      <th>mock reads</th>
+      <th>treatment background</th>
+      <th>mock background</th>
+      <th>p_value</th>
+      <th>FDR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th></th>
+      <td>EMX1_1</td>
+      <td>EMX1_2</td>
+      <td>48</td>
+      <td>7</td>
+      <td>8464</td>
+      <td>10061</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_2</td>
+      <td>EMX1_3</td>
+      <td>28</td>
+      <td>0</td>
+      <td>4925</td>
+      <td>4130</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_1</td>
+      <td>EMX1_3</td>
+      <td>26</td>
+      <td>0</td>
+      <td>4962</td>
+      <td>4357</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_2</td>
+      <td>EMX1_6</td>
+      <td>12</td>
+      <td>0</td>
+      <td>6937</td>
+      <td>7916</td>
+      <td>0.000107</td>
+      <td>0.000214</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_3</td>
+      <td>EMX1_6</td>
+      <td>14</td>
+      <td>0</td>
+      <td>4067</td>
+      <td>3428</td>
+      <td>0.00019</td>
+      <td>0.000304</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_1</td>
+      <td>EMX1_6</td>
+      <td>6</td>
+      <td>0</td>
+      <td>6989</td>
+      <td>8352</td>
+      <td>0.008929</td>
+      <td>0.011905</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_1</td>
+      <td>EMX1_5</td>
+      <td>8</td>
+      <td>0</td>
+      <td>3381</td>
+      <td>2525</td>
+      <td>0.011486</td>
+      <td>0.013127</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>EMX1_10</td>
+      <td>EMX1_2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>8075</td>
+      <td>8644</td>
+      <td>0.233254</td>
+      <td>0.233254</td>
+    </tr>
+  </tbody>
+</table>
+						</table>
+						<table style="width:100%">
+							<tr>
+							<th>
+								
+									<form method="get" action="crispector_output/tx_reads_with_primer_inconsistency.csv">
+										<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment reads with primer inconsistency</button>
+									</form>
+								
+							</th>
+							<th>
+								
+									<form method="get" action="crispector_output/mock_reads_with_primer_inconsistency.csv">
+										<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Mock reads with primer inconsistency</button>
+									</form>
+								
+							</th>
+							</tr>
+						</table>
+						<p>
+							<br>
+						</p>
+						</div>
+						
+			
+
+					
+				</li>
+			</div>	  
+		</div>
+	</div>
+  	 
+
+      <div>
+        <br></br>
+      </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-12">
+            <div class="card text-center">
+              <li class="list-group-item">
+                <div id="Reading_Statistics" class="card-header">
+                  <h5 style="text-align:center">
+		Reading Statistics
+</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-tabs justify-content-center" id="Reading_Statistics" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="mapping_stats-tab" data-toggle="tab" href="#mapping_stats" role="tab" aria-controls="" aria-selected="true">
+		Mapping Statistics
+</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="mapping_per_site-tab" data-toggle="tab" href="#mapping_per_site" role="tab" aria-controls="mapping_per_site" aria-selected="false">
+		Number of Aligned Reads per Site
+</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="mapping_stats" role="tabpanel" aria-labelledby="mapping_stats-tab">
+                      <a href="
+		crispector_output/mapping_statistics.svg
+"><img src="
+		crispector_output/mapping_statistics.png
+" width='95%' ></a>
+                      <br>
+                      <br>
+                      <br>
+                      
+		<table style="width:100%">
+			<tr>
+			  <th>
+				
+				  <form method="get" action="crispector_output/treatment_fastp/fastp.html">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment fastp report</button>
+				  </form>
+				
+			  </th>
+			  <th>
+				
+				  <form method="get" action="crispector_output/mock_fastp/fastp.html">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Mock fastp report</button>
+				  </form>
+				
+				</th>
+			</tr>
+			<tr>
+			  <th>
+				
+				  <form method="get" action="crispector_output/treatment_unmatched_reads.fa.gz">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment unassigned reads</button>
+				  </form>
+				
+			  </th>
+			  <th>
+				
+				  <form method="get" action="crispector_output/mock_unmatched_reads.fa.gz">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">   Mock unassigned reads   </button>
+				  </form>
+				
+				</th>
+			</tr>
+		</table>
+
+                      <br>
+                      <br>
+                      <p style="text-align: center;"><b> </b></p>
+                      <p style="text-align: center;"><b>Warnings</b></p>
+                      
+	
+		No warnings
+	
+
+                      <br>
+                    </div>
+                    <div class="tab-pane fade" id="mapping_per_site" role="tabpanel" aria-labelledby="mapping_per_site-tab">
+                      <a href="
+		crispector_output/number_of_aligned_reads_per_site.svg
+"><img src="
+		crispector_output/number_of_aligned_reads_per_site.png
+" width='95%'></a>
+                      <br>
+                      <br>
+                      <br>
+                      
+		<table style="width:100%">
+			<tr>
+			  <th>
+				
+				  <form method="get" action="crispector_output/treatment_fastp/fastp.html">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment fastp report</button>
+				  </form>
+				
+			  </th>
+			  <th>
+				
+				  <form method="get" action="crispector_output/mock_fastp/fastp.html">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Mock fastp report</button>
+				  </form>
+				
+				</th>
+			</tr>
+			<tr>
+			  <th>
+				
+				  <form method="get" action="crispector_output/treatment_unmatched_reads.fa.gz">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">Treatment unassigned reads</button>
+				  </form>
+				
+			  </th>
+			  <th>
+				
+				  <form method="get" action="crispector_output/mock_unmatched_reads.fa.gz">
+					<button type="submit" style="width:80%; height:20%" class="btn btn-primary">   Mock unassigned reads   </button>
+				  </form>
+				
+				</th>
+			</tr>
+		</table>
+
+                      <br>
+                      <br>
+                      <p style="text-align: center;"><b> </b></p>
+                      <p style="text-align: center;"><b>Warnings</b></p>
+                      
+	
+		No warnings
+	
+
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </div>
+          </div>
+        </div> 
+        <div>
+          <br></br>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-12">
+            <div class="card text-center">
+                  <li class="list-group-item" id="Target Sites">
+                    <div class="card-header">
+                      <h5 style="text-align:center">Target Sites</h5>
+                    </div>
+                  </li>
+                  
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_1">         
+                    <a href="crispector_output/EMX1_1/report.html" style="text-align: center;">EMX1_1</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_10">         
+                    <a href="crispector_output/EMX1_10/report.html" style="text-align: center;">EMX1_10</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_2">         
+                    <a href="crispector_output/EMX1_2/report.html" style="text-align: center;">EMX1_2</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_3">         
+                    <a href="crispector_output/EMX1_3/report.html" style="text-align: center;">EMX1_3</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_4">         
+                    <a href="crispector_output/EMX1_4/report.html" style="text-align: center;">EMX1_4</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_5">         
+                    <a href="crispector_output/EMX1_5/report.html" style="text-align: center;">EMX1_5</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_6">         
+                    <a href="crispector_output/EMX1_6/report.html" style="text-align: center;">EMX1_6</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_7">         
+                    <a href="crispector_output/EMX1_7/report.html" style="text-align: center;">EMX1_7</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_8">         
+                    <a href="crispector_output/EMX1_8/report.html" style="text-align: center;">EMX1_8</a>
+            </div>
+            </li>
+	<li class="list-group-item" style="text-align: center;">
+            <div id="EMX1_9">         
+                    <a href="crispector_output/EMX1_9/report.html" style="text-align: center;">EMX1_9</a>
+            </div>
+            </li>
+	
+
+            </div>
+          </div>
+        </div> 
+        <div>
+          <br></br>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-12">
+            <div class="card text-center">
+                <li class="list-group-item" style="text-align: center;">   
+                  <div id="Crispector_Main_Log">    
+                    <div class="card-header">
+                      <h5 style="text-align:center">Log</h5>
+                    </div>
+                    <a href="
+		crispector_output/crispector_main.log
+" style="text-align: center;">Crispector Log</a>
+                    <br>
+                  </div>
+                </li> 
+            </div>
+          </div>
+        </div> 
+  </ul>
+</div>
+            
+</body>
+</html>
